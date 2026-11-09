@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from "react";
 import KartuProfil from "./KartuProfil";
 import BadgeSkill from "./BadgeSkill";
@@ -8,10 +7,34 @@ import fotoSaya from "./assets/foto.png";
 
 function App() {
   const daftarPraktikum = [
-    { id: 101, kode: "IF211", nama: "Pemrograman Web (React & Laravel)", sks: 3, hari: "Senin" },
-    { id: 102, kode: "IF212", nama: "Sistem Basis Data (PostgreSQL)", sks: 3, hari: "Rabu" },
-    { id: 103, kode: "IF213", nama: "Rekayasa Perangkat Lunak Terapan", sks: 3, hari: "Kamis" },
-    { id: 104, kode: "IF214", nama: "Arsitektur Sistem Terdistribusi", sks: 2, hari: "Jumat" },
+    {
+      id: 101,
+      kode: "IF211",
+      nama: "Pemrograman Web (React & Laravel)",
+      sks: 3,
+      hari: "Senin",
+    },
+    {
+      id: 102,
+      kode: "IF212",
+      nama: "Sistem Basis Data (PostgreSQL)",
+      sks: 3,
+      hari: "Rabu",
+    },
+    {
+      id: 103,
+      kode: "IF213",
+      nama: "Rekayasa Perangkat Lunak Terapan",
+      sks: 3,
+      hari: "Kamis",
+    },
+    {
+      id: 104,
+      kode: "IF214",
+      nama: "Arsitektur Sistem Terdistribusi",
+      sks: 2,
+      hari: "Jumat",
+    },
   ];
 
   const daftarSkill = [
@@ -26,43 +49,66 @@ function App() {
     {
       id: 1,
       judul: "Website Portofolio Pribadi",
-      deskripsi: "Halaman web statis sederhana untuk menampilkan biodata, riwayat pendidikan, dan minat menggunakan struktur HTML semantik dan styling CSS.",
+      deskripsi:
+        "Halaman web statis sederhana untuk menampilkan biodata, riwayat pendidikan, dan minat menggunakan struktur HTML semantik dan styling CSS.",
       teknologi: ["HTML5", "CSS3"],
     },
     {
       id: 2,
       judul: "Aplikasi Kalkulator Sederhana",
-      deskripsi: "Latihan logika pemrograman dasar untuk membuat kalkulator aritmatika (tambah, kurang, kali, bagi) interaktif pada antarmuka web.",
+      deskripsi:
+        "Latihan logika pemrograman dasar untuk membuat kalkulator aritmatika (tambah, kurang, kali, bagi) interaktif pada antarmuka web.",
       teknologi: ["HTML", "CSS", "JavaScript"],
     },
     {
       id: 3,
       judul: "Program Kasir Toko Sederhana",
-      deskripsi: "Aplikasi berbasis Java untuk menghitung transaksi belanja, diskon otomatis, dan kembalian menggunakan logika percabangan serta perulangan.",
+      deskripsi:
+        "Aplikasi berbasis Java untuk menghitung transaksi belanja, diskon otomatis, dan kembalian menggunakan logika percabangan serta perulangan.",
       teknologi: ["Java", "Dasar Pemrograman"],
     },
     {
       id: 4,
       judul: "To-Do List / Catatan Tugas",
-      deskripsi: "Aplikasi pencatat daftar tugas harian kuliah berbasis web dengan fungsi menambahkan dan menandai tugas yang sudah selesai.",
+      deskripsi:
+        "Aplikasi pencatat daftar tugas harian kuliah berbasis web dengan fungsi menambahkan dan menandai tugas yang sudah selesai.",
       teknologi: ["HTML", "CSS", "DOM Manipulation"],
     },
   ];
 
   const notifikasiSapaan = () => {
-    alert("Selamat datang di Modul 1! Anda berhasil menguasai fondasi arsitektur React JS.");
+    alert(
+      "Selamat datang di Modul 1! Anda berhasil menguasai fondasi arsitektur React JS.",
+    );
   };
 
   return (
-    <div style={{ maxWidth: "860px", margin: "40px auto", padding: "0 24px", fontFamily: "Arial, sans-serif" }}>
+    <div
+      style={{
+        maxWidth: "860px",
+        margin: "40px auto",
+        padding: "0 24px",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
       <header style={{ textAlign: "center", marginBottom: "32px" }}>
-        <h1 style={{ color: "#1B365D", margin: "0 0 8px 0" }}>Praktikum Pemrograman Web</h1>
-        <p style={{ color: "#666", fontSize: "15px" }}>Laboratorium Informatika - Modul 1: Pengenalan React JS & Vite</p>
+        <h1 style={{ color: "#1B365D", margin: "0 0 8px 0" }}>
+          Praktikum Pemrograman Web
+        </h1>
+        <p style={{ color: "#666", fontSize: "15px" }}>
+          Laboratorium Informatika - Modul 1: Pengenalan React JS & Vite
+        </p>
       </header>
 
       {/* Profil Mahasiswa Praktikan */}
       <section style={{ marginBottom: "36px" }}>
-        <h2 style={{ color: "#2C3E50", borderBottom: "2px solid #E1E4E8", paddingBottom: "8px" }}>
+        <h2
+          style={{
+            color: "#2C3E50",
+            borderBottom: "2px solid #E1E4E8",
+            paddingBottom: "8px",
+          }}
+        >
           Profil Mahasiswa Praktikan
         </h2>
         <KartuProfil
@@ -74,10 +120,16 @@ function App() {
         />
 
         <div style={{ marginTop: "12px" }}>
-          <h4 style={{ margin: "0 0 8px 0", color: "#495057" }}>Daftar Keahlian:</h4>
+          <h4 style={{ margin: "0 0 8px 0", color: "#495057" }}>
+            Daftar Keahlian:
+          </h4>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
             {daftarSkill.map((skill) => (
-              <BadgeSkill key={skill.id} namaSkill={skill.nama} level={skill.level} />
+              <BadgeSkill
+                key={skill.id}
+                namaSkill={skill.nama}
+                level={skill.level}
+              />
             ))}
           </div>
         </div>
@@ -85,7 +137,13 @@ function App() {
 
       {/* Rencana Praktikum Semester */}
       <section style={{ marginBottom: "36px" }}>
-        <h2 style={{ color: "#2C3E50", borderBottom: "2px solid #E1E4E8", paddingBottom: "8px" }}>
+        <h2
+          style={{
+            color: "#2C3E50",
+            borderBottom: "2px solid #E1E4E8",
+            paddingBottom: "8px",
+          }}
+        >
           Daftar Rencana Praktikum Semester
         </h2>
         <div style={{ display: "grid", gap: "12px" }}>
@@ -103,14 +161,22 @@ function App() {
 
       {/* Showcase Portofolio Mini */}
       <section style={{ marginBottom: "36px" }}>
-        <h2 style={{ color: "#2C3E50", borderBottom: "2px solid #E1E4E8", paddingBottom: "8px" }}>
+        <h2
+          style={{
+            color: "#2C3E50",
+            borderBottom: "2px solid #E1E4E8",
+            paddingBottom: "8px",
+          }}
+        >
           Showcase Portofolio Mini
         </h2>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: "16px"
-        }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "16px",
+          }}
+        >
           {daftarProyek.map((proyek) => (
             <ProyekCard
               key={proyek.id}

@@ -1,4 +1,3 @@
-// src/KartuProfil.jsx
 import React from 'react';
 
 // Komponen Functional menerima properti (props) melalui parameter fungsi

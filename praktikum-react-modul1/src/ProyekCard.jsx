@@ -1,4 +1,3 @@
-// src/ProyekCard.jsx
 import React from 'react';
 
 function ProyekCard({ judul, deskripsi, teknologi }) {

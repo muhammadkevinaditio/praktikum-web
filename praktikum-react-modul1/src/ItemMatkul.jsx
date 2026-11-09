@@ -1,4 +1,3 @@
-// src/ItemMatkul.jsx
 import React from "react";
 
 function ItemMatkul({ kode, nama, sks, hari }) {
