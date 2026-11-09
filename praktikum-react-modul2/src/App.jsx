@@ -1,15 +1,22 @@
+// src/App.jsx
 import { useState, useEffect } from "react";
 import "./App.css";
 import Kartu from "./Kartu";
 import Penghitung from "./Penghitung";
 import FormTugas from "./FormTugas";
 import ItemTugas from "./ItemTugas";
+import FormTransaksi from "./FormTransaksi";
+import ItemTransaksi from "./ItemTransaksi";
+import RingkasanSaldo from "./RingkasanSaldo";
+
 function App() {
-  // 1. State utama: daftar tugas (array berisi objek)
+  // =========================================================================
+  // STATE & LOGIKA: DAFTAR TUGAS PRAKTIKUM (Langkah 4 - 7, Tugas 1 & Tugas 2)
+  // =========================================================================
   const [daftarTugas, setDaftarTugas] = useState(() => {
     const dataTersimpan = localStorage.getItem("daftar-tugas");
     if (dataTersimpan) {
-      return JSON.parse(dataTersimpan); // ubah teks JSON kembali menjadi array
+      return JSON.parse(dataTersimpan);
     }
     return [
       { id: 1, judul: "Install Node.js dan Vite", selesai: true },
@@ -17,64 +24,161 @@ function App() {
     ];
   });
 
-  // Efek A: dijalankan SEKALI saat App pertama kali tampil
+  const [filter, setFilter] = useState("semua");
+
   useEffect(() => {
-    console.log("Aplikasi Daftar Tugas siap digunakan!");
+    console.log("Aplikasi Praktikum Modul 2 siap digunakan!");
   }, []);
-  // Efek B: perbarui judul tab peramban setiap daftarTugas berubah
+
   useEffect(() => {
     const sisa = daftarTugas.filter((tugas) => !tugas.selesai).length;
     document.title = `(${sisa}) Tugas Belum Selesai`;
   }, [daftarTugas]);
-  // Efek C: simpan daftarTugas ke localStorage setiap kali berubah
+
   useEffect(() => {
     localStorage.setItem("daftar-tugas", JSON.stringify(daftarTugas));
   }, [daftarTugas]);
 
-  // 2. Menambah tugas: buat array BARU berisi tugas lama + tugas baru
   const tambahTugas = (judul) => {
     const tugasBaru = { id: Date.now(), judul: judul, selesai: false };
     setDaftarTugas([...daftarTugas, tugasBaru]);
   };
-  // 3. Mengubah status selesai: salin tugas yang dicentang, biarkan yang lain
+
   const ubahStatus = (id) => {
     const daftarBaru = daftarTugas.map((tugas) => {
       if (tugas.id === id) {
-        return { ...tugas, selesai: !tugas.selesai }; // salinan dengan status
-        dibalik;
+        return { ...tugas, selesai: !tugas.selesai };
       }
-      return tugas; // tugas lain tidak berubah
+      return tugas;
     });
     setDaftarTugas(daftarBaru);
   };
-  // 4. Menghapus tugas: ambil semua tugas KECUALI yang id-nya sama
+
   const hapusTugas = (id) => {
     setDaftarTugas(daftarTugas.filter((tugas) => tugas.id !== id));
   };
-  // 5. Nilai turunan: dihitung dari state, tidak perlu state baru
+
+  const hapusSemuaSelesai = () => {
+    setDaftarTugas(daftarTugas.filter((tugas) => !tugas.selesai));
+  };
+
   const jumlahSelesai = daftarTugas.filter((tugas) => tugas.selesai).length;
+
+  const tugasTerfilter = daftarTugas.filter((tugas) => {
+    if (filter === "belum") return !tugas.selesai;
+    if (filter === "selesai") return tugas.selesai;
+    return true;
+  });
+
+  // =========================================================================
+  // STATE & LOGIKA: CATATAN KEUANGAN MINI (Tugas 3 - Laporan Mandiri)
+  // =========================================================================
+  const [daftarTransaksi, setDaftarTransaksi] = useState(() => {
+    const dataTersimpan = localStorage.getItem("catatan-keuangan");
+    if (dataTersimpan) {
+      return JSON.parse(dataTersimpan);
+    }
+    return [
+      { id: 1, keterangan: "Uang Saku Bulanan", nominal: 1500000, jenis: "Pemasukan" },
+      { id: 2, keterangan: "Beli Token Listrik Kos", nominal: 100000, jenis: "Pengeluaran" },
+    ];
+  });
+
+  // Sinkronisasi transaksi ke localStorage
+  useEffect(() => {
+    localStorage.setItem("catatan-keuangan", JSON.stringify(daftarTransaksi));
+  }, [daftarTransaksi]);
+
+  const tambahTransaksi = (transaksiBaru) => {
+    setDaftarTransaksi([...daftarTransaksi, transaksiBaru]);
+  };
+
+  const hapusTransaksi = (id) => {
+    setDaftarTransaksi(daftarTransaksi.filter((item) => item.id !== id));
+  };
+
+  // Nilai turunan otomatis: total pemasukan, pengeluaran, dan saldo
+  const totalPemasukan = daftarTransaksi
+    .filter((t) => t.jenis === "Pemasukan")
+    .reduce((acc, curr) => acc + curr.nominal, 0);
+
+  const totalPengeluaran = daftarTransaksi
+    .filter((t) => t.jenis === "Pengeluaran")
+    .reduce((acc, curr) => acc + curr.nominal, 0);
+
+  const totalSaldo = totalPemasukan - totalPengeluaran;
+
   return (
     <div className="wadah">
-      <h1 className="judul">Daftar Tugas Praktikum</h1>
+      <h1 className="judul">Praktikum Pemrograman Web</h1>
       <p className="subjudul">
         Laboratorium Informatika - Modul 2: React Lanjutan
       </p>
+
+      {/* Bagian Latihan 1: Komponen Penghitung */}
       <Penghitung />
+
+      {/* Bagian 2: Daftar Tugas Praktikum */}
       <Kartu judul="Tambah Tugas Baru">
         <FormTugas onTambah={tambahTugas} />
       </Kartu>
-      <Kartu judul="Daftar Tugas">
-        <p className="ringkasan">
-          {jumlahSelesai} dari {daftarTugas.length} tugas selesai
-        </p>
-        {/* Conditional rendering dengan ternary: tampilkan pesan jika kosong */}
-        {daftarTugas.length === 0 ? (
-          <p className="kosong">
-            Belum ada tugas. Yuk tambahkan tugas pertamamu!
+
+      <Kartu judul="Daftar Tugas Praktikum">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+          <p className="ringkasan" style={{ margin: 0 }}>
+            {jumlahSelesai} dari {daftarTugas.length} tugas selesai
           </p>
+
+          {/* Conditional Rendering: Tombol Hapus Semua Selesai (Tugas 2) */}
+          {jumlahSelesai > 0 && (
+            <button
+              className="tombol tombol-merah tombol-kecil"
+              onClick={hapusSemuaSelesai}
+            >
+              Hapus Semua yang Selesai
+            </button>
+          )}
+        </div>
+
+        {/* Filter Tombol Dinamis (Tugas 1) */}
+        <div className="baris" style={{ margin: "16px 0" }}>
+          <button
+            className="tombol tombol-kecil"
+            style={{
+              backgroundColor: filter === "semua" ? "#1B365D" : "#E5E7EB",
+              color: filter === "semua" ? "#FFFFFF" : "#374151",
+            }}
+            onClick={() => setFilter("semua")}
+          >
+            Semua
+          </button>
+          <button
+            className="tombol tombol-kecil"
+            style={{
+              backgroundColor: filter === "belum" ? "#1B365D" : "#E5E7EB",
+              color: filter === "belum" ? "#FFFFFF" : "#374151",
+            }}
+            onClick={() => setFilter("belum")}
+          >
+            Belum Selesai
+          </button>
+          <button
+            className="tombol tombol-kecil"
+            style={{
+              backgroundColor: filter === "selesai" ? "#1B365D" : "#E5E7EB",
+              color: filter === "selesai" ? "#FFFFFF" : "#374151",
+            }}
+            onClick={() => setFilter("selesai")}
+          >
+            Selesai
+          </button>
+        </div>
+
+        {tugasTerfilter.length === 0 ? (
+          <p className="kosong">Tidak ada tugas dalam kategori ini.</p>
         ) : (
           <ul className="daftar">
-            {daftarTugas.map((tugas) => (
+            {tugasTerfilter.map((tugas) => (
               <ItemTugas
                 key={tugas.id}
                 tugas={tugas}
@@ -85,7 +189,37 @@ function App() {
           </ul>
         )}
       </Kartu>
+
+      {/* Bagian 3: Catatan Keuangan Mini (Tugas 3) */}
+      <Kartu judul="Tambah Transaksi Keuangan">
+        <FormTransaksi onTambahTransaksi={tambahTransaksi} />
+      </Kartu>
+
+      <Kartu judul="Catatan Keuangan Mini">
+        {/* Komponen Ringkasan Saldo Otomatis */}
+        <RingkasanSaldo
+          totalPemasukan={totalPemasukan}
+          totalPengeluaran={totalPengeluaran}
+          totalSaldo={totalSaldo}
+        />
+
+        {/* Conditional Rendering Pesan Kosong */}
+        {daftarTransaksi.length === 0 ? (
+          <p className="kosong">Belum ada transaksi. Silakan catat transaksi baru!</p>
+        ) : (
+          <ul className="daftar">
+            {daftarTransaksi.map((item) => (
+              <ItemTransaksi
+                key={item.id}
+                transaksi={item}
+                onHapus={hapusTransaksi}
+              />
+            ))}
+          </ul>
+        )}
+      </Kartu>
     </div>
   );
 }
+
 export default App;
